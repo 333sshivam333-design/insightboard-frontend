@@ -4,13 +4,17 @@ import { useState } from "react";
 
 interface Props {
   onSubmit: (text: string) => void;
+  isLoading?: boolean;
 }
 
-export default function TranscriptForm({ onSubmit }: Props) {
+export default function TranscriptForm({ onSubmit, isLoading = false }: Props) {
   const [transcript, setTranscript] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) {
+      return;
+    }
     onSubmit(transcript);
   };
 
@@ -22,13 +26,15 @@ export default function TranscriptForm({ onSubmit }: Props) {
         placeholder="Paste meeting transcript..."
         value={transcript}
         onChange={(e) => setTranscript(e.target.value)}
+        disabled={isLoading}
       />
 
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded"
+        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-60 disabled:cursor-not-allowed"
+        disabled={isLoading}
       >
-        Generate Tasks
+        {isLoading ? "Generating..." : "Generate Tasks"}
       </button>
     </form>
   );

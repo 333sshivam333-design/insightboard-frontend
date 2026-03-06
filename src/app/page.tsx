@@ -8,10 +8,16 @@ import { Task } from "@/types/task";
 
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleTranscriptSubmit = async (text: string) => {
-    const data = await generateTasks(text);
-    setTasks(data.tasks);
+    setIsLoading(true);
+    try {
+      const data = await generateTasks(text);
+      setTasks(data.tasks);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -20,7 +26,7 @@ export default function Home() {
         InsightBoard Dependency Engine
       </h1>
 
-      <TranscriptForm onSubmit={handleTranscriptSubmit} />
+      <TranscriptForm onSubmit={handleTranscriptSubmit} isLoading={isLoading} />
 
       <TaskList tasks={tasks} />
     </main>

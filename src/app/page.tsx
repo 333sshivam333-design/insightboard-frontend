@@ -3,6 +3,7 @@
 import { useState } from "react";
 import TranscriptForm from "@/components/TranscriptForm";
 import TaskList from "@/components/TaskList";
+import TaskGraph from "@/components/TaskGraph";
 import { generateTasks } from "@/services/api";
 import { Task } from "@/types/task";
 
@@ -29,6 +30,9 @@ export default function Home() {
       <TranscriptForm onSubmit={handleTranscriptSubmit} isLoading={isLoading} />
 
       <TaskList tasks={tasks} />
+      {tasks.length > 0 && (
+        <TaskGraph tasks={tasks} />
+      )}
     </main>
   );
 }
